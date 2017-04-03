@@ -13,6 +13,7 @@ class TicTacToeNode
 
   def losing_node?(evaluator)
     return @board.winner != evaluator if @board.winner
+    return false if @board.tied?
     childs = children
     if @next_mover_mark != evaluator
       childs.each { |child| return true if child.losing_node?(evaluator) }
@@ -25,6 +26,7 @@ class TicTacToeNode
 
   def winning_node?(evaluator)
     return @board.winner == evaluator if @board.winner
+    return false if @board.tied?
     childs = children
     if @next_mover_mark != evaluator
       childs.each { |child| return false unless child.winning_node?(evaluator) }
@@ -53,7 +55,7 @@ class TicTacToeNode
   def generate_child(row_num, col_num)
     possible_board = @board.dup
     possible_board[[row_num, col_num]] = @next_mover_mark
-    next_turn_mark = @next_turn_mark == :o ? :x : :o
+    next_turn_mark = @next_mover_mark == :o ? :x : :o
     TicTacToeNode.new(possible_board, next_turn_mark, [row_num, col_num])
   end
 end
