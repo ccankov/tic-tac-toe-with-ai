@@ -1,5 +1,7 @@
 require_relative 'tic_tac_toe'
+require 'byebug'
 
+# A polytree node for a Tic Tac Toe game
 class TicTacToeNode
   attr_reader :board, :next_mover_mark, :prev_move_pos
 
@@ -10,11 +12,27 @@ class TicTacToeNode
   end
 
   def losing_node?(evaluator)
-    
+    return @board.winner != evaluator if @board.winner
+    childs = children
+    if @next_mover_mark != evaluator
+      childs.each { |child| return true if child.losing_node?(evaluator) }
+      false
+    else
+      childs.each { |child| return false unless child.losing_node?(evaluator) }
+      true
+    end
   end
 
   def winning_node?(evaluator)
-
+    return @board.winner == evaluator if @board.winner
+    childs = children
+    if @next_mover_mark != evaluator
+      childs.each { |child| return false unless child.winning_node?(evaluator) }
+      true
+    else
+      childs.each { |child| return true if child.winning_node?(evaluator) }
+      false
+    end
   end
 
   # This method generates an array of all moves that can be made after
