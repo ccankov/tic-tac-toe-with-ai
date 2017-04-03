@@ -1,3 +1,5 @@
+require_relative 'super_computer_player.rb'
+
 # DON'T EDIT ME!
 
 class Board
@@ -206,9 +208,16 @@ class ComputerPlayer
 end
 
 if __FILE__ == $PROGRAM_NAME
-  puts "Play the dumb computer!"
-  hp = HumanPlayer.new("Ned")
-  cp = ComputerPlayer.new
+  hp = HumanPlayer.new("Chris")
+  puts "Would you like to play the unbeatable computer? (y/n)"
+  difficulty = gets.chomp
+  if difficulty == "y"
+    puts "Play the brilliant computer!"
+    cp = SuperComputerPlayer.new
+  else
+    puts "Play the dumb computer!"
+    cp = ComputerPlayer.new
+  end
 
   TicTacToe.new(hp, cp).run
 end
